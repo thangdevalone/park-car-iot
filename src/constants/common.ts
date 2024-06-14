@@ -1,0 +1,1 @@
+export const STATIC_HOST = "http://26.50.157.204:3000/"
