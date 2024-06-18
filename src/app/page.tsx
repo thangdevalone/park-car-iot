@@ -35,7 +35,7 @@ export default function Home() {
   const [cardLog, setCardLog] = useState<ParkingLog[]>([]);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://192.168.1.15:80/ws");
+    const ws = new WebSocket("ws://192.168.1.13:80/ws");
 
     ws.onopen = () => {
       console.log("Connected to the WebSocket server");
@@ -48,14 +48,14 @@ export default function Home() {
       console.log(JSON.parse(newData));
       const cardId = JSON.parse(newData).id;
 
-      setImageInUrl("http://192.168.1.13/capture");
-      setImageOutUrl("http://192.168.1.13/capture");
+      setImageInUrl("http://192.168.1.15/capture");
+      setImageOutUrl("http://192.168.1.15/capture");
       if (cardId && cardId.trim() !== "") {
         setCardNumber(cardId);
         await handleCardLog(
           cardId,
-          "http://192.168.1.13/capture",
-          "http://192.168.1.13/capture"
+          "http://192.168.1.15/capture",
+          "http://192.168.1.15/capture"
         );
         handleGetCardLog();
       }
@@ -78,15 +78,9 @@ export default function Home() {
 
   const handleGetCardLog = async () => {
     try {
-      const res = (await mainApi.getCardLog()) as unknown as ResponseApi;
+      const res = (await mainApi.getCardLog()) as unknown as ParkingLog[];
       console.log(res);
       setCardLog(res);
-      toast({
-        title: res.mess,
-        description: format(new Date(), "EEEE, MMMM d, yyyy 'at' h:mm a", {
-          locale: vi,
-        }),
-      });
     } catch (error) {
       toast({
         title: (error as unknown as ResponseApi).mess,
@@ -142,7 +136,7 @@ export default function Home() {
           <div className="flex-1">
             <div>
               <div className="flex items-center justify-center text-2xl bg-[#86efac] py-3">
-                Thông tin xe
+                Lịch sử gửi xe
               </div>
               <div className="h-96 overflow-y-auto">
                 <DataTable columns={columns} data={cardLog} />
@@ -155,7 +149,7 @@ export default function Home() {
       <div className="grid grid-cols-2 py-2 gap-2">
         <div>
           <span className="bg-black text-white">CAM_IN</span>
-          <img src={"http://192.168.1.13:81/stream"} alt="camin" />
+          <img src={"http://192.168.1.15:81/stream"} alt="camin" />
         </div>
         <div>
           <span className="bg-black text-white">CAM_OUT</span>
