@@ -11,6 +11,7 @@ import GroupDoor from "@/components/GroupDoor";
 import MapPark from "@/components/MapPark";
 import { ParkingLog, columns } from "./columns";
 import { DataTable } from "./data-table";
+import { STATIC_HOST_WS } from "@/constants";
 
 // const data: ParkingLog[] = [
 //   {
@@ -35,7 +36,7 @@ export default function Home() {
   const [cardLog, setCardLog] = useState<ParkingLog[]>([]);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://192.168.1.13:80/ws");
+    const ws = new WebSocket(STATIC_HOST_WS);
 
     ws.onopen = () => {
       console.log("Connected to the WebSocket server");
